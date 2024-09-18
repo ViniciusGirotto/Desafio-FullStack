@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\NivelResource;
 use App\Services\NivelService;
 use Illuminate\Http\Request;
 
@@ -17,25 +18,25 @@ class NivelController extends Controller
     public function index()
     {
         $niveis = $this->nivelService->getAll();
-        return response()->json($niveis, 200);
+        return response()->json(NivelResource::collection($niveis)->resolve(), 200);
     }
 
     public function store(Request $request)
     {
         $nivel = $this->nivelService->create($request);
-        return response()->json($nivel, 201);
+        return response()->json((new NivelResource($nivel))->resolve(), 201);
     }
 
     public function show($id)
     {
         $nivel = $this->nivelService->getById($id);
-        return response()->json($nivel, 200);
+        return response()->json((new NivelResource($nivel))->resolve(), 200);
     }
 
     public function update(Request $request, $id)
     {
         $nivel = $this->nivelService->update($request, $id);
-        return response()->json($nivel, 200);
+        return response()->json((new NivelResource($nivel))->resolve(), 200);
     }
 
     public function destroy($id)

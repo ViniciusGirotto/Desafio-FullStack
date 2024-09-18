@@ -4,12 +4,19 @@ namespace App\Services;
 
 use App\Models\Nivel;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class NivelService
 {
     public function getAll()
     {
-        return Nivel::all();
+        $niveis = Nivel::all();
+
+        if ($niveis->isEmpty()) {
+            throw new NotFoundHttpException('Nenhum nível encontrado.');
+        }
+
+        return $niveis;
     }
 
     public function create(Request $request)
