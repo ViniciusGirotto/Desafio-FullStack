@@ -1,54 +1,46 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\Models\Desenvolvedor;
+use App\Services\DesenvolvedorService;
 use Illuminate\Http\Request;
 
 class DesenvolvedorController extends Controller
 {
+    protected $desenvolvedorService;
+
+    public function __construct(DesenvolvedorService $desenvolvedorService)
+    {
+        $this->desenvolvedorService = $desenvolvedorService;
+    }
+
     public function index()
     {
-        $desenvolvedores = Desenvolvedor::with('nivel')->get();
+        $desenvolvedores = $this->desenvolvedorService->getAll();
         return response()->json($desenvolvedores, 200);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nivel_id' => 'required|exists:niveis,id',
-            'nome' => 'required|string',
-            'sexo' => 'required|string',
-            'data_nascimento' => 'required|date',
-            'hobby' => 'required|string'
-        ]);
-        $desenvolvedor = Desenvolvedor::create($request->all());
+        $desenvolvedor = $this->desenvolvedorService->create($request);
         return response()->json($desenvolvedor, 201);
     }
 
     public function show($id)
     {
-        $desenvolvedor = Desenvolvedor::with('nivel')->findOrFail($id);
+        $desenvolvedor = $this->desenvolvedorService->getById($id);
         return response()->json($desenvolvedor, 200);
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nivel_id' => 'required|exists:niveis,id',
-            'nome' => 'required|string',
-            'sexo' => 'required|string',
-            'data_nascimento' => 'required|date',
-            'hobby' => 'required|string'
-        ]);
-        $desenvolvedor = Desenvolvedor::findOrFail($id);
-        $desenvolvedor->update($request->all());
+        $desenvolvedor = $this->desenvolvedorService->update($request, $id);
         return response()->json($desenvolvedor, 200);
     }
 
     public function destroy($id)
     {
-        $desenvolvedor = Desenvolvedor::findOrFail($id);
-        $desenvolvedor->delete();
+        $this->desenvolvedorService->delete($id);
         return response()->json(null, 204);
     }
 }

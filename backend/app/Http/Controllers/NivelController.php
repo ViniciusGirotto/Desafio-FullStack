@@ -1,45 +1,50 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\Models\Nivel;
+use App\Services\NivelService;
 use Illuminate\Http\Request;
 
 class NivelController extends Controller
 {
+    protected $nivelService;
+
+    public function __construct(NivelService $nivelService)
+    {
+        $this->nivelService = $nivelService;
+    }
+
     public function index()
     {
-        $niveis = Nivel::all();
+        $niveis = $this->nivelService->getAll();
         return response()->json($niveis, 200);
     }
 
     public function store(Request $request)
     {
-        $request->validate(['nivel' => 'required|string']);
-        $nivel = Nivel::create($request->all());
+        $nivel = $this->nivelService->create($request);
         return response()->json($nivel, 201);
     }
 
     public function show($id)
     {
-        $nivel = Nivel::findOrFail($id);
+        $nivel = $this->nivelService->getById($id);
         return response()->json($nivel, 200);
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate(['nivel' => 'required|string']);
-        $nivel = Nivel::findOrFail($id);
-        $nivel->update($request->all());
+        $nivel = $this->nivelService->update($request, $id);
         return response()->json($nivel, 200);
     }
 
     public function destroy($id)
     {
-        $nivel = Nivel::findOrFail($id);
-        if ($nivel->desenvolvedores()->count() > 0) {
-            return response()->json(['error' => 'Nível possui desenvolvedores associados'], 400);
+        try {
+            $this->nivelService->delete($id);
+            return response()->json(null, 204);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
         }
-        $nivel->delete();
-        return response()->json(null, 204);
     }
 }
