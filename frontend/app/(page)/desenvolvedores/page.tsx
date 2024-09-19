@@ -3,14 +3,19 @@
 import { DataTable } from "@/components/DataTable";
 import { useDesenvolvedoresGetAll } from "@/services/desenvolvedores.service";
 import { columns } from "./columns";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import HeaderPage from "@/components/HeaderPage";
 
 export default function Desenvolvedores() {
-  const {data} = useDesenvolvedoresGetAll()
-  console.log('data', data)
-  return(
-    <DataTable
-      columns={columns}
-      data={data ? data : []}
-    />
+  const { data } = useDesenvolvedoresGetAll()
+  return (
+    <>
+      <HeaderPage title="Desenvolvedores" />
+      <DataTable
+        columns={columns}
+        data={data ? data : []}
+      />
+    </>
   )
 }
