@@ -14,7 +14,7 @@ export const useDevsPagination = (page: number) => {
   return useQuery({
     queryKey: ["useDevsPaginationKey", page],
     queryFn: async () => {
-      const response = await Axios.get(`/api/desenvolvedores/paginado?page=${page}`);
+      const response = await Axios.get(`/api/desenvolvedores/paginate?page=${page}`);
       return response.data;
     },
   });

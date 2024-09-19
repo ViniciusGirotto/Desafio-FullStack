@@ -11,7 +11,7 @@ export const useNiveisPagination = (page: number) => {
     return useQuery({
       queryKey: ["useNiveisPaginationKey", page],
       queryFn: async () => {
-        const response = await Axios.get(`/api/niveis/paginado?page=${page}`);
+        const response = await Axios.get(`/api/niveis/paginate?page=${page}`);
         return response.data;
       },
     });

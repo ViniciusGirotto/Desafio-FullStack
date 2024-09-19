@@ -18,10 +18,17 @@ class DesenvolvedorService
 
         return $desenvolvedores;
     }
-    public function getPagination($page, $size)
+    
+    public function getPagination($page, $size, $search = null)
     {
-        $desenvolvedores = Desenvolvedor::with('nivel')->paginate($size, ['*'], 'page', $page);
-
+        $query = Desenvolvedor::with('nivel');
+    
+        if ($search) {
+            $query->where('nome', 'like', '%' . $search . '%');
+        }
+    
+        $desenvolvedores = $query->paginate($size, ['*'], 'page', $page);
+    
         return [
             'data' => $desenvolvedores->items(),
             'meta' => [

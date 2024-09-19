@@ -56,6 +56,13 @@ class DesenvolvedorController extends Controller
      *         required=false,
      *         @OA\Schema(type="integer", default=10)
      *     ),
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="Termo de busca",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Lista de desenvolvedores paginada",
@@ -67,12 +74,11 @@ class DesenvolvedorController extends Controller
      *                 @OA\Items(
      *                     type="object",
      *                     @OA\Property(property="id", type="integer"),
-     *                     @OA\Property(property="nivel", type="string"),
      *                     @OA\Property(property="nome", type="string"),
-     *                     @OA\Property(property="sexo", type="string"),
-     *                     @OA\Property(property="data_nascimento", type="string", format="date"),
-     *                     @OA\Property(property="idade", type="integer"),
-     *                     @OA\Property(property="hobby", type="string")
+     *                     @OA\Property(property="nivel", type="object",
+     *                         @OA\Property(property="id", type="integer"),
+     *                         @OA\Property(property="nivel", type="string")
+     *                     )
      *                 )
      *             ),
      *             @OA\Property(
@@ -95,8 +101,10 @@ class DesenvolvedorController extends Controller
     {
         $page = $request->query('page', 1);
         $size = $request->query('size', 10);
-        $desenvolvedores = $this->desenvolvedorService->getPagination($page, $size);
-        return response()->json($desenvolvedores);
+        $search = $request->query('search', null);
+
+        $desenvolvedores = $this->desenvolvedorService->getPagination($page, $size, $search);
+        return response()->json($desenvolvedores, 200);
     }
 
 

@@ -20,17 +20,23 @@ class NivelService
         return $niveis;
     }
 
-    public function getPagination($page, $size)
+    public function getPagination($page, $size, $search = null)
     {
-        $niveis = Nivel::paginate($size, ['*'], 'page', $page);
-
+        $query = Nivel::query();
+    
+        if ($search) {
+            $query->where('nivel', 'like', '%' . $search . '%');
+        }
+    
+        $niveis = $query->paginate($size, ['*'], 'page', $page);
+    
         $niveis->getCollection()->transform(function ($nivel) {
             return [
                 'id' => $nivel->id,
                 'nivel' => $nivel->nivel,
             ];
         });
-
+    
         return [
             'data' => $niveis->items(),
             'meta' => [

@@ -55,6 +55,13 @@ class NivelController extends Controller
      *         required=false,
      *         @OA\Schema(type="integer", default=10)
      *     ),
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="Termo de busca",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Lista de níveis paginada",
@@ -89,10 +96,11 @@ class NivelController extends Controller
     {
         $page = $request->query('page', 1);
         $size = $request->query('size', 10);
-        $niveis = $this->nivelService->getPagination($page, $size);
+        $search = $request->query('search', null);
+
+        $niveis = $this->nivelService->getPagination($page, $size, $search);
         return response()->json($niveis, 200);
     }
-
     /**
      * @OA\Post(
      *     path="/api/niveis",
