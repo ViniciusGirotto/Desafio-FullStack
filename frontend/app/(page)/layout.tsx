@@ -11,7 +11,10 @@ export default function AuthLayout({
   return (
     <>
       <Header />
+      <div className="w-[95%] p-8 gap-4 mt-10 mx-auto rounded-xl">
+
       {children}
+      </div>
     </>
   );
 }

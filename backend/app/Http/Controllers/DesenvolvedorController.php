@@ -34,7 +34,7 @@ class DesenvolvedorController extends Controller
     public function index()
     {
         $desenvolvedores = $this->desenvolvedorService->getAll();
-        return response()->json($desenvolvedores);    
+        return response()->json(DesenvolvedorResource::collection($desenvolvedores)->resolve(), 200);  
     }
 
     /**
