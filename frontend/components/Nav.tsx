@@ -3,11 +3,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 
-
 const links = [
   { name: "Niveis", path: "/niveis" },
   { name: "Desenvolvedores", path: "/desenvolvedores" },
-  { name: "Cadastro", path: "/cadastro" },
 ];
 
 export function NavBar({ containerStyles, linkStyles, underLineStyles }: any) {
@@ -34,5 +32,4 @@ export function NavBar({ containerStyles, linkStyles, underLineStyles }: any) {
       ))}
     </nav>
   );
-};
-
+}
