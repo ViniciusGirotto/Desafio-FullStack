@@ -27,6 +27,7 @@ export const columns: ColumnDef<Niveis>[] = [
                 </div>
             );
         },
+        enableSorting: true,
         size: 100
     },
     {

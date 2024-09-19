@@ -38,14 +38,17 @@ export const columns: ColumnDef<Devs>[] = [
   {
     accessorKey: "nome",
     header: "Nome",
+    enableSorting: true,
   },
   {
     accessorKey: "idade",
     header: "Idade",
+    enableSorting: true,
   },
   {
     accessorKey: "sexo",
     header: "Sexo",
+    enableSorting: true,
     cell: ({ row }) => {
       const sexo = row.getValue<string>("sexo");
       return (
@@ -58,6 +61,7 @@ export const columns: ColumnDef<Devs>[] = [
   {
     accessorKey: "data_nascimento",
     header: "Data de Nascimento",
+    enableSorting: true,
     cell: ({ row }) => {
       const dataNascimento = row.getValue<Date>("data_nascimento");
       if (dataNascimento) {
@@ -71,10 +75,12 @@ export const columns: ColumnDef<Devs>[] = [
   {
     accessorKey: "hobby",
     header: "Hobby",
+    enableSorting: true,
   },
   {
     accessorKey: "nivel",
     header: "Nível",
+    enableSorting: true,
     cell: ({ row }) => {
       const nivel = row.getValue<Niveis>("nivel");
       return <div className="capitalize">{nivel?.nivel}</div>;
