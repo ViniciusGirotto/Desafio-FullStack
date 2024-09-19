@@ -7,11 +7,11 @@ export interface Params {
 }
 
 
-export const useNiveisPagination = (page: number) => {
+export const useNiveisPagination = (page: number, search: string) => {
     return useQuery({
-      queryKey: ["useNiveisPaginationKey", page],
+      queryKey: ["useNiveisPaginationKey", page, search],
       queryFn: async () => {
-        const response = await Axios.get(`/api/niveis/paginate?page=${page}`);
+        const response = await Axios.get(`/api/niveis/paginate?page=${page}&search=${search}`);
         return response.data;
       },
     });

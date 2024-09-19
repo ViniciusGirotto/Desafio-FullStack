@@ -7,20 +7,22 @@ import HeaderPage from "@/components/HeaderPage";
 import { PaginationComponent } from "@/components/Pagination";
 import { useState } from "react";
 
-
-
-
 export default function Niveis() {
   const [page, setPage] = useState(1);
-  const { data: niveis } = useNiveisPagination(page);
+  const [search, setSearch] = useState("");
+  const { data: niveis } = useNiveisPagination(page, search);
 
   const handlePageChange = (page: number) => {
     setPage(page);
   };
 
+  const handleSearch = (search: string) => {
+    setSearch(search);
+  };
+
   return (
     <>
-      <HeaderPage title="Niveis" />
+      <HeaderPage title="Niveis" onSearch={handleSearch} />
       <DataTable columns={columns} data={niveis ? niveis.data : []} />
       <div className="flex mt-2 !justify-end">
         <PaginationComponent
@@ -32,5 +34,5 @@ export default function Niveis() {
         />
       </div>
     </>
-  )
+  );
 }

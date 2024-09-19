@@ -10,11 +10,11 @@ export interface Params {
   nivel_id: number;
 }
 
-export const useDevsPagination = (page: number) => {
+export const useDevsPagination = (page: number, search: string) => {
   return useQuery({
-    queryKey: ["useDevsPaginationKey", page],
+    queryKey: ["useDevsPaginationKey", page, search],
     queryFn: async () => {
-      const response = await Axios.get(`/api/desenvolvedores/paginate?page=${page}`);
+      const response = await Axios.get(`/api/desenvolvedores/paginate?page=${page}&search=${search}`);
       return response.data;
     },
   });
