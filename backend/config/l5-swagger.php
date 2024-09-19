@@ -16,7 +16,7 @@ return [
                 'docs' => storage_path('api-docs'),
                 'docs_json' => 'api-docs.json',
                 'docs_yaml' => 'api-docs.yaml',
-                'annotations' => base_path('app'), // Adicione esta linha
+                'annotations' => base_path('app'), 
                 'swagger_ui_assets_path' => env('L5_SWAGGER_UI_ASSETS_PATH', 'vendor/swagger-api/swagger-ui/dist/'),
                 'views' => base_path('resources/views/vendor/l5-swagger'),
             ],

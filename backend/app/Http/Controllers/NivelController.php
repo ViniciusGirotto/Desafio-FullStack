@@ -35,6 +35,63 @@ class NivelController extends Controller
         $niveis = $this->nivelService->getAll();
         return response()->json(NivelResource::collection($niveis)->resolve(), 200);
     }
+    
+    /**
+     * @OA\Get(
+     *     path="/api/niveis/paginate",
+     *     summary="Listar níveis com paginação",
+     *     tags={"Níveis"},
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Número da página",
+     *         required=false,
+     *         @OA\Schema(type="integer", default=1)
+     *     ),
+     *     @OA\Parameter(
+     *         name="size",
+     *         in="query",
+     *         description="Tamanho da página",
+     *         required=false,
+     *         @OA\Schema(type="integer", default=10)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de níveis paginada",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="id", type="integer"),
+     *                     @OA\Property(property="nivel", type="string")
+     *                 )
+     *             ),
+     *             @OA\Property(
+     *                 property="meta",
+     *                 type="object",
+     *                 @OA\Property(property="total", type="integer"),
+     *                 @OA\Property(property="per_page", type="integer"),
+     *                 @OA\Property(property="current_page", type="integer"),
+     *                 @OA\Property(property="last_page", type="integer")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Nenhum nível encontrado"
+     *     )
+     * )
+     */    
+    public function paginate(Request $request)
+    {
+        $page = $request->query('page', 1);
+        $size = $request->query('size', 10);
+        $niveis = $this->nivelService->getPagination($page, $size);
+        return response()->json($niveis, 200);
+    }
 
     /**
      * @OA\Post(

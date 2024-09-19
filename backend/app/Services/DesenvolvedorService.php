@@ -18,6 +18,20 @@ class DesenvolvedorService
 
         return $desenvolvedores;
     }
+    public function getPagination($page, $size)
+    {
+        $desenvolvedores = Desenvolvedor::with('nivel')->paginate($size, ['*'], 'page', $page);
+
+        return [
+            'data' => $desenvolvedores->items(),
+            'meta' => [
+                'total' => $desenvolvedores->total(),
+                'per_page' => $desenvolvedores->perPage(),
+                'current_page' => $desenvolvedores->currentPage(),
+                'last_page' => $desenvolvedores->lastPage()
+            ]
+        ];
+    }
 
     public function create(Request $request)
     {

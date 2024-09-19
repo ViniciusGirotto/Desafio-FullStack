@@ -20,6 +20,28 @@ class NivelService
         return $niveis;
     }
 
+    public function getPagination($page, $size)
+    {
+        $niveis = Nivel::paginate($size, ['*'], 'page', $page);
+
+        $niveis->getCollection()->transform(function ($nivel) {
+            return [
+                'id' => $nivel->id,
+                'nivel' => $nivel->nivel,
+            ];
+        });
+
+        return [
+            'data' => $niveis->items(),
+            'meta' => [
+                'total' => $niveis->total(),
+                'per_page' => $niveis->perPage(),
+                'current_page' => $niveis->currentPage(),
+                'last_page' => $niveis->lastPage()
+            ]
+        ];
+    }
+
     public function create(Request $request)
     {
         $request->validate(['nivel' => 'required|string']);

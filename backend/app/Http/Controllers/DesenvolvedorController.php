@@ -36,6 +36,69 @@ class DesenvolvedorController extends Controller
         $desenvolvedores = $this->desenvolvedorService->getAll();
         return response()->json(DesenvolvedorResource::collection($desenvolvedores)->resolve(), 200);  
     }
+    
+    /**
+     * @OA\Get(
+     *     path="/api/desenvolvedores/paginate",
+     *     summary="Listar desenvolvedores com paginação",
+     *     tags={"Desenvolvedores"},
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Número da página",
+     *         required=false,
+     *         @OA\Schema(type="integer", default=1)
+     *     ),
+     *     @OA\Parameter(
+     *         name="size",
+     *         in="query",
+     *         description="Tamanho da página",
+     *         required=false,
+     *         @OA\Schema(type="integer", default=10)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de desenvolvedores paginada",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="id", type="integer"),
+     *                     @OA\Property(property="nivel", type="string"),
+     *                     @OA\Property(property="nome", type="string"),
+     *                     @OA\Property(property="sexo", type="string"),
+     *                     @OA\Property(property="data_nascimento", type="string", format="date"),
+     *                     @OA\Property(property="idade", type="integer"),
+     *                     @OA\Property(property="hobby", type="string")
+     *                 )
+     *             ),
+     *             @OA\Property(
+     *                 property="meta",
+     *                 type="object",
+     *                 @OA\Property(property="total", type="integer"),
+     *                 @OA\Property(property="per_page", type="integer"),
+     *                 @OA\Property(property="current_page", type="integer"),
+     *                 @OA\Property(property="last_page", type="integer")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Nenhum desenvolvedor encontrado"
+     *     )
+     * )
+     */
+    public function paginate(Request $request)
+    {
+        $page = $request->query('page', 1);
+        $size = $request->query('size', 10);
+        $desenvolvedores = $this->desenvolvedorService->getPagination($page, $size);
+        return response()->json($desenvolvedores);
+    }
+
 
     /**
      * @OA\Post(
