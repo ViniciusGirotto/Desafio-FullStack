@@ -31,6 +31,20 @@ export const columns: ColumnDef<Niveis>[] = [
         size: 100
     },
     {
+        accessorKey: "devCount",
+        header: "Quantidade de devs",
+        cell: ({ row }) => {
+            const count = row.getValue<number>("devCount");
+            return (
+                <div className="flex-1">
+                    {count}
+                </div>
+            );
+        },
+        enableSorting: true,
+        size: 100
+    },
+    {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {

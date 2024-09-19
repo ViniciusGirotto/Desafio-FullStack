@@ -27,6 +27,8 @@ class NivelService
         if ($search) {
             $query->where('nivel', 'like', '%' . $search . '%');
         }
+
+        $query->withCount('desenvolvedores');
     
         $niveis = $query->paginate($size, ['*'], 'page', $page);
     
@@ -34,6 +36,7 @@ class NivelService
             return [
                 'id' => $nivel->id,
                 'nivel' => $nivel->nivel,
+                'devCount' => $nivel->desenvolvedores_count
             ];
         });
     

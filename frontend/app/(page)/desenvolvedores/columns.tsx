@@ -1,26 +1,15 @@
 "use client";
 
+import { DeleteModal } from "@/components/DeleteModal";
+import { ModalDevs } from "@/components/ModalDevs";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { ModalDevs } from "@/components/ModalDevs";
-import { Trash2Icon } from "lucide-react";
-import { DeleteModal } from "@/components/DeleteModal";
 
 export type Niveis = {
   id: number;
   nivel: string;
+  devCount: number;
 };
 
 export type Devs = {
