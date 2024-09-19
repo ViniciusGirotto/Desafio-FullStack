@@ -1,5 +1,5 @@
-# Usar a imagem oficial do PHP 8 com Apache
-FROM php:8.0-apache
+# Usar a imagem oficial do PHP 8 com PHP-FPM
+FROM php:8.0-fpm
 
 # Instalar extensões necessárias do PHP
 RUN apt-get update && apt-get install -y \
@@ -24,11 +24,10 @@ WORKDIR /var/www/html
 COPY . /var/www/html
 
 # Ajustar permissões
-RUN chown -R www-data:www-data /var/www/html \
-    && a2enmod rewrite
+RUN chown -R www-data:www-data /var/www/html
 
-# Expor a porta 80
-EXPOSE 80
+# Expor a porta do servidor Laravel
+EXPOSE 8001
 
-# Comando para iniciar o servidor Apache
-CMD ["apache2-foreground"]
+# Comando para iniciar o servidor Laravel
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
