@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DesenvolvedorResource;
 use App\Services\DesenvolvedorService;
 use Illuminate\Http\Request;
 
@@ -17,25 +18,25 @@ class DesenvolvedorController extends Controller
     public function index()
     {
         $desenvolvedores = $this->desenvolvedorService->getAll();
-        return response()->json($desenvolvedores, 200);
+        return response()->json(DesenvolvedorResource::collection($desenvolvedores)->resolve(), 200);
     }
 
     public function store(Request $request)
     {
         $desenvolvedor = $this->desenvolvedorService->create($request);
-        return response()->json($desenvolvedor, 201);
+        return new DesenvolvedorResource($desenvolvedor);
     }
 
     public function show($id)
     {
         $desenvolvedor = $this->desenvolvedorService->getById($id);
-        return response()->json($desenvolvedor, 200);
+        return new DesenvolvedorResource($desenvolvedor);
     }
 
     public function update(Request $request, $id)
     {
         $desenvolvedor = $this->desenvolvedorService->update($request, $id);
-        return response()->json($desenvolvedor, 200);
+        return new DesenvolvedorResource($desenvolvedor);
     }
 
     public function destroy($id)

@@ -4,12 +4,19 @@ namespace App\Services;
 
 use App\Models\Desenvolvedor;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DesenvolvedorService
 {
     public function getAll()
     {
-        return Desenvolvedor::with('nivel')->get();
+        $desenvolvedores = Desenvolvedor::with('nivel')->get();
+
+        if ($desenvolvedores->isEmpty()) {
+            throw new NotFoundHttpException('Nenhum desenvolvedor encontrado.');
+        }
+
+        return $desenvolvedores;
     }
 
     public function create(Request $request)
