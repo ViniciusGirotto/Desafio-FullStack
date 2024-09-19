@@ -25,7 +25,7 @@ class NivelService
         $query = Nivel::query();
     
         if ($search) {
-            $query->where('nivel', 'like', '%' . $search . '%');
+            $query->whereRaw('LOWER(nivel) LIKE ?', ['%' . strtolower($search) . '%']);
         }
 
         $query->withCount('desenvolvedores');

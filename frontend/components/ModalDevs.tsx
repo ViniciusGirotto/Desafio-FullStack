@@ -42,6 +42,7 @@ import { useState, useEffect } from "react";
 import { EditIcon } from "lucide-react";
 import { queryClient } from "@/utils/ReactQueryProvider";
 import { ptBR } from "date-fns/locale";
+import Loader from "./Loader";
 
 interface ModalDevsProps {
   developer?: Devs;
@@ -59,8 +60,8 @@ const devCreateSchema = z.object({
 type FormDataType = z.infer<typeof devCreateSchema>;
 
 export function ModalDevs({ developer, isEditMode }: ModalDevsProps) {
-  const { data: niveis } = useNiveisGetAll();
   const [isOpen, setIsOpen] = useState(false);
+  const { data: niveis } = useNiveisGetAll(isOpen);
   const form = useForm<FormDataType>({
     resolver: zodResolver(devCreateSchema),
     defaultValues: {
@@ -85,9 +86,12 @@ export function ModalDevs({ developer, isEditMode }: ModalDevsProps) {
 
   function handleOpen() {
     setIsOpen((prev) => !prev);
+    if (!isEditMode) {
+      form.reset();
+    }
   }
 
-  const { mutateAsync: createDevsFn } = useMutation({
+  const { mutateAsync: createDevsFn, isPending: isPendingCreate } = useMutation({
     mutationFn: useCreateDevs.fn,
     onSuccess: () => {
       form.reset();
@@ -95,7 +99,7 @@ export function ModalDevs({ developer, isEditMode }: ModalDevsProps) {
       toast({
         title: "Desenvolvedor cadastrado com sucesso!",
       });
-      queryClient.invalidateQueries({queryKey: ["useDevsPaginationKey"]});
+      queryClient.invalidateQueries({ queryKey: ["useDevsPaginationKey"] });
     },
     onError: () => {
       toast({
@@ -105,7 +109,7 @@ export function ModalDevs({ developer, isEditMode }: ModalDevsProps) {
     },
   });
 
-  const { mutateAsync: updateDevsFn } = useMutation({
+  const { mutateAsync: updateDevsFn, isPending: isPendingUpdate } = useMutation({
     mutationFn: useUpdateDevs.fn,
     onSuccess: () => {
       form.reset();
@@ -113,7 +117,7 @@ export function ModalDevs({ developer, isEditMode }: ModalDevsProps) {
       toast({
         title: "Desenvolvedor atualizado com sucesso!",
       });
-      queryClient.invalidateQueries({queryKey: ["useDevsPaginationKey"]});
+      queryClient.invalidateQueries({ queryKey: ["useDevsPaginationKey"] });
     },
     onError: () => {
       toast({
@@ -123,14 +127,14 @@ export function ModalDevs({ developer, isEditMode }: ModalDevsProps) {
     },
   });
 
+  const isPending = isPendingCreate || isPendingUpdate;
+
   const handleSubmit = async (values: FormDataType) => {
     const payload = {
       nivel_id: Number(values.nivel),
       nome: values.nome,
       sexo: values.genero,
-      data_nascimento: format(new Date(values.dob), "PPP",{
-        locale: ptBR,
-      }),
+      data_nascimento: format(new Date(values.dob), "yyyy-MM-dd"),
       hobby: values.hobby,
     };
 
@@ -218,7 +222,7 @@ export function ModalDevs({ developer, isEditMode }: ModalDevsProps) {
                           )}
                         >
                           {field.value ? (
-                            format(field.value, "PPP",{
+                            format(field.value, "PPP", {
                               locale: ptBR,
                             })
                           ) : (
@@ -284,6 +288,7 @@ export function ModalDevs({ developer, isEditMode }: ModalDevsProps) {
         <DialogFooter>
           <Button form="createDevelopForm" type="submit">
             {isEditMode ? "Salvar alterações" : "Salvar"}
+            {isPending && <Loader />}
           </Button>
         </DialogFooter>
       </DialogContent>

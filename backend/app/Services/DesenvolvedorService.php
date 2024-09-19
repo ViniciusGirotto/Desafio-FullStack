@@ -24,7 +24,7 @@ class DesenvolvedorService
         $query = Desenvolvedor::with('nivel');
     
         if ($search) {
-            $query->where('nome', 'like', '%' . $search . '%');
+            $query->whereRaw('LOWER(nome) LIKE ?', ['%' . strtolower($search) . '%']);
         }
     
         $desenvolvedores = $query->paginate($size, ['*'], 'page', $page);

@@ -15,6 +15,9 @@ import { useDeleteNivel } from "@/services/niveis.service";
 import { queryClient } from "@/utils/ReactQueryProvider";
 import { useMutation } from "@tanstack/react-query";
 import { Trash2Icon } from "lucide-react";
+import Loader from "./Loader";
+import { Button } from "./ui/button";
+import { useState } from "react";
 
 interface DeleteModalProps {
   itemName: string;
@@ -22,13 +25,15 @@ interface DeleteModalProps {
 }
 
 export function DeleteModal({ itemName, id }: DeleteModalProps) {
-  const { mutateAsync: deleteItemDev } = useMutation({
+  const [isOpen, setIsOpen] = useState(false);
+  const { mutateAsync: deleteItemDev, isPending: isPendingDev } = useMutation({
     mutationFn: useDeleteDevs.fn,
     onSuccess: () => {
       toast({
         title: "Desenvolvedor deletado com sucesso!",
       });
       queryClient.invalidateQueries({ queryKey: ["useDevsPaginationKey"] });
+      setIsOpen(false);
     },
     onError: () => {
       toast({
@@ -38,13 +43,14 @@ export function DeleteModal({ itemName, id }: DeleteModalProps) {
     },
   });
 
-  const { mutateAsync: deleteItemNivel } = useMutation({
+  const { mutateAsync: deleteItemNivel, isPending: isPendingNivel } = useMutation({
     mutationFn: useDeleteNivel.fn,
     onSuccess: () => {
       toast({
         title: "Nivel deletado com sucesso!",
       });
       queryClient.invalidateQueries({ queryKey: ["useNiveisPaginationKey"] });
+      setIsOpen(false);
     },
     onError: (error : any) => {
       console.log('error', error);  
@@ -56,6 +62,8 @@ export function DeleteModal({ itemName, id }: DeleteModalProps) {
     },
   });
 
+  const isPending = isPendingDev || isPendingNivel;
+
   const handleSubmit = () => {
     if (itemName === "dev") {
       deleteItemDev(id);
@@ -65,7 +73,7 @@ export function DeleteModal({ itemName, id }: DeleteModalProps) {
   };
 
   return (
-    <AlertDialog>
+    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild>
         <Trash2Icon className="w-6 h-6 text-red-500 cursor-pointer" />
       </AlertDialogTrigger>
@@ -78,11 +86,13 @@ export function DeleteModal({ itemName, id }: DeleteModalProps) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-          <AlertDialogAction
+          <Button
             onClick={handleSubmit}
+            type="button"
           >
             Continuar
-          </AlertDialogAction>
+            {isPending && <Loader/>}
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

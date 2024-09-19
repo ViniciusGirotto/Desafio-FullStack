@@ -1,16 +1,17 @@
 "use client";
 
 import { DataTable } from "@/components/DataTable";
-import { useDevsPagination } from "@/services/desenvolvedores.service";
-import { columns } from "./columns";
 import HeaderPage from "@/components/HeaderPage";
+import Loader from "@/components/Loader";
 import { PaginationComponent } from "@/components/Pagination";
+import { useDevsPagination } from "@/services/desenvolvedores.service";
 import { useState } from "react";
+import { columns } from "./columns";
 
 export default function Desenvolvedores() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const { data: devs } = useDevsPagination(page, search);
+  const { data: devs, isFetching } = useDevsPagination(page, search);
 
   const handlePageChange = (page: number) => {
     setPage(page);
@@ -23,7 +24,11 @@ export default function Desenvolvedores() {
   return (
     <>
       <HeaderPage title="Desenvolvedores" onSearch={handleSearch} />
-      <DataTable columns={columns} data={devs ? devs.data : []} />
+      {isFetching ? (
+        <Loader />
+      ) : (
+        <DataTable columns={columns} data={devs ? devs.data : []} />
+      )}
       <div className="flex mt-2 !justify-end">
         <PaginationComponent
           total={devs?.meta.total}

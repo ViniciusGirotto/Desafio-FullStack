@@ -28,6 +28,7 @@ import { EditIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import Loader from "./Loader";
 
 interface ModalDevsProps {
   nivel?: Niveis;
@@ -35,7 +36,7 @@ interface ModalDevsProps {
 }
 
 const devCreateSchema = z.object({
-  nivel: z.string({ required_error: "Nível é obrigatório" }),
+  nivel: z.string().min(2, { message: "Nivel é obrigatório" }),
 });
 
 type FormDataType = z.infer<typeof devCreateSchema>;
@@ -59,7 +60,7 @@ export function ModalNivel({ nivel, isEditMode }: ModalDevsProps) {
     setIsOpen((prev) => !prev);
   }
 
-  const { mutateAsync: createNivelFn } = useMutation({
+  const { mutateAsync: createNivelFn, isPending: isPendingCreate } = useMutation({
     mutationFn: useCreateNivel.fn,
     onSuccess: () => {
       form.reset();
@@ -77,7 +78,7 @@ export function ModalNivel({ nivel, isEditMode }: ModalDevsProps) {
     },
   });
 
-  const { mutateAsync: updateNivelFn } = useMutation({
+  const { mutateAsync: updateNivelFn, isPending: isPendingUpdate } = useMutation({
     mutationFn: useUpdateNivel.fn,
     onSuccess: () => {
       form.reset();
@@ -94,6 +95,8 @@ export function ModalNivel({ nivel, isEditMode }: ModalDevsProps) {
       });
     },
   });
+
+  const isPending = isPendingCreate || isPendingUpdate;
 
   const handleSubmit = async (values: FormDataType) => {
     const payload = {
@@ -154,6 +157,7 @@ export function ModalNivel({ nivel, isEditMode }: ModalDevsProps) {
         <DialogFooter>
           <Button form="createNivelForm" type="submit">
             {isEditMode ? "Salvar alterações" : "Salvar"}
+            {isPending && <Loader/>}
           </Button>
         </DialogFooter>
       </DialogContent>
