@@ -2,7 +2,6 @@
 
 import { DataTable } from "@/components/DataTable";
 import {
-  useDesenvolvedoresGetAll,
   useDevsPagination,
 } from "@/services/desenvolvedores.service";
 import { columns } from "./columns";

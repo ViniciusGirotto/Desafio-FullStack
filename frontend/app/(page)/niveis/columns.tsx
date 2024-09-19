@@ -12,6 +12,8 @@ import {
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { ColumnDef } from "@tanstack/react-table"
 import { Niveis } from "../desenvolvedores/columns"
+import { ModalNivel } from "@/components/ModalNiveis"
+import { DeleteModal } from "@/components/DeleteModal"
 
 export const columns: ColumnDef<Niveis>[] = [
     {
@@ -31,32 +33,13 @@ export const columns: ColumnDef<Niveis>[] = [
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const nivel = row.original
-
-            return (
-                <div className="flex justify-end">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <DotsHorizontalIcon className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Ações</DropdownMenuLabel>
-                            <DropdownMenuItem
-                                onClick={() => navigator.clipboard.writeText(nivel.nivel)}
-                            >
-                                Copiar Nivel
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>Editar</DropdownMenuItem>
-                            <DropdownMenuItem className="text-red-500">Excluir</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
-            )
+          const nivel = row.original;
+          return (
+            <div className="flex flex-row justify-end items-center gap-x-2">
+              <ModalNivel nivel={nivel} isEditMode={true} />
+              <DeleteModal itemName="nivel" id={nivel.id}/>
+            </div>
+          );
         },
-        size: 50
     }
 ]

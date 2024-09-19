@@ -95,6 +95,7 @@ export function ModalDevs({ developer, isEditMode }: ModalDevsProps) {
       toast({
         title: "Desenvolvedor cadastrado com sucesso!",
       });
+      queryClient.invalidateQueries({queryKey: ["useDevsPaginationKey"]});
     },
     onError: () => {
       toast({
@@ -112,7 +113,7 @@ export function ModalDevs({ developer, isEditMode }: ModalDevsProps) {
       toast({
         title: "Desenvolvedor atualizado com sucesso!",
       });
-      queryClient.invalidateQueries({queryKey: ["useDesenvolvedoresGetAllKey"]});
+      queryClient.invalidateQueries({queryKey: ["useDevsPaginationKey"]});
     },
     onError: () => {
       toast({

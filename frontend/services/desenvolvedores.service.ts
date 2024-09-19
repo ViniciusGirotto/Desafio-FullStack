@@ -20,9 +20,9 @@ export const useDevsPagination = (page: number) => {
   });
 }
 
-export const useDesenvolvedoresGetAll = () => {
+export const useDevsGetAll = () => {
   return useQuery({
-    queryKey: ["useDesenvolvedoresGetAllKey"],
+    queryKey: ["useDevsGetAllKey"],
     queryFn: async () => {
       const response = await Axios.get("/api/desenvolvedores");
       return response.data;

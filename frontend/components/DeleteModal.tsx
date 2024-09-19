@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "@/hooks/use-toast";
 import { useDeleteDevs } from "@/services/desenvolvedores.service";
+import { useDeleteNivel } from "@/services/niveis.service";
 import { queryClient } from "@/utils/ReactQueryProvider";
 import { useMutation } from "@tanstack/react-query";
 import { Trash2Icon } from "lucide-react";
@@ -27,9 +28,7 @@ export function DeleteModal({ itemName, id }: DeleteModalProps) {
       toast({
         title: "Desenvolvedor deletado com sucesso!",
       });
-      queryClient.invalidateQueries({
-        queryKey: ["useDesenvolvedoresGetAllKey"],
-      });
+      queryClient.invalidateQueries({ queryKey: ["useDevsPaginationKey"] });
     },
     onError: () => {
       toast({
@@ -38,6 +37,32 @@ export function DeleteModal({ itemName, id }: DeleteModalProps) {
       });
     },
   });
+
+  const { mutateAsync: deleteItemNivel } = useMutation({
+    mutationFn: useDeleteNivel.fn,
+    onSuccess: () => {
+      toast({
+        title: "Nivel deletado com sucesso!",
+      });
+      queryClient.invalidateQueries({ queryKey: ["useNiveisPaginationKey"] });
+    },
+    onError: (error : any) => {
+      console.log('error', error);  
+      toast({
+        title: "Erro ao deletar nivel",
+        variant: "destructive",
+        description: error.response.data.error,
+      });
+    },
+  });
+
+  const handleSubmit = () => {
+    if (itemName === "dev") {
+      deleteItemDev(id);
+    } else {
+      deleteItemNivel(id);
+    }
+  };
 
   return (
     <AlertDialog>
@@ -53,7 +78,11 @@ export function DeleteModal({ itemName, id }: DeleteModalProps) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-          <AlertDialogAction onClick={()=>{deleteItemDev(id)}}>Continuar</AlertDialogAction>
+          <AlertDialogAction
+            onClick={handleSubmit}
+          >
+            Continuar
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
