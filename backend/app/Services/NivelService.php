@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Desenvolvedor;
 use App\Models\Nivel;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -41,9 +42,12 @@ class NivelService
     public function delete($id)
     {
         $nivel = Nivel::findOrFail($id);
-        if ($nivel->desenvolvedores()->count() > 0) {
-            throw new \Exception('Nível possui desenvolvedores associados');
+
+     
+        if (Desenvolvedor::where('nivel_id', $id)->exists()) {
+            throw new \Exception('Não é possível remover o nível, pois existem desenvolvedores associados a ele.');
         }
+
         $nivel->delete();
     }
 }
