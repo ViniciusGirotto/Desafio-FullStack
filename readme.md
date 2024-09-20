@@ -35,7 +35,10 @@ Este projeto é uma aplicação Full Stack desenvolvida como parte de um teste t
     ```bash
     php artisan migrate --seed
     ```
-
+5. Para rodar os testes da aplicação, execute o seguinte comando dentro do container:
+    ```bash
+    ./vendor/bin/phpunit
+    ```
 Após esses passos, a API estará rodando e será possível acessar a documentação Swagger da aplicação em: `http://localhost:8000/api/documentation#/default`
 
 ## Instruções para Subir o Frontend
