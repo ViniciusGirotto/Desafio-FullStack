@@ -23,11 +23,14 @@ WORKDIR /var/www/html
 # Copiar os arquivos do projeto para o contêiner
 COPY . /var/www/html
 
+# Instalar dependências do Composer
+RUN composer install
+
 # Ajustar permissões
 RUN chown -R www-data:www-data /var/www/html
 
 # Expor a porta do servidor Laravel
-EXPOSE 8001
+EXPOSE 8000
 
 # Comando para iniciar o servidor Laravel
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
