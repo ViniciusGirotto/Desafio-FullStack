@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { ColumnDef } from "@tanstack/react-table"
-import { Niveis } from "../desenvolvedores/columns"
 import { ModalNivel } from "@/components/ModalNiveis"
 import { DeleteModal } from "@/components/DeleteModal"
+import { Niveis } from "@/types/app.types"
 
 export const columns: ColumnDef<Niveis>[] = [
     {

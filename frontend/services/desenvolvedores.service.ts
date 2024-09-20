@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import Axios from "./api";
-import { Devs } from "@/app/(page)/desenvolvedores/columns";
 
 export interface Params {
   nome: string;

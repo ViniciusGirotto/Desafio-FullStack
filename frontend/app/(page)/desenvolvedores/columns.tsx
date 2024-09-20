@@ -2,26 +2,11 @@
 
 import { DeleteModal } from "@/components/DeleteModal";
 import { ModalDevs } from "@/components/ModalDevs";
+import { Devs, Niveis } from "@/types/app.types";
 import { ColumnDef } from "@tanstack/react-table";
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
-export type Niveis = {
-  id: number;
-  nivel: string;
-  devCount: number;
-};
-
-export type Devs = {
-  id: number;
-  nivel_id: number;
-  nome: string;
-  sexo: string;
-  data_nascimento: Date;
-  idade: number;
-  hobby: string;
-  nivel: Niveis;
-};
 
 export const columns: ColumnDef<Devs>[] = [
   {

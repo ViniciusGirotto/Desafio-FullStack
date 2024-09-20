@@ -37,13 +37,13 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 import { useNiveisGetAll } from "@/services/niveis.service";
-import { Devs, Niveis } from "@/app/(page)/desenvolvedores/columns";
 import { useState, useEffect } from "react";
 import { EditIcon, XIcon } from "lucide-react";
 import { queryClient } from "@/utils/ReactQueryProvider";
 import { ptBR } from "date-fns/locale";
 import Loader from "./Loader";
 import { PopoverClose } from "@radix-ui/react-popover";
+import { Devs, Niveis } from "@/types/app.types";
 
 interface ModalDevsProps {
   developer?: Devs;
