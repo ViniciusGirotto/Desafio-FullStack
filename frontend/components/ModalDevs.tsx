@@ -43,6 +43,7 @@ import { EditIcon } from "lucide-react";
 import { queryClient } from "@/utils/ReactQueryProvider";
 import { ptBR } from "date-fns/locale";
 import Loader from "./Loader";
+import { PopoverClose } from "@radix-ui/react-popover";
 
 interface ModalDevsProps {
   developer?: Devs;
@@ -91,41 +92,45 @@ export function ModalDevs({ developer, isEditMode }: ModalDevsProps) {
     }
   }
 
-  const { mutateAsync: createDevsFn, isPending: isPendingCreate } = useMutation({
-    mutationFn: useCreateDevs.fn,
-    onSuccess: () => {
-      form.reset();
-      setIsOpen(false);
-      toast({
-        title: "Desenvolvedor cadastrado com sucesso!",
-      });
-      queryClient.invalidateQueries({ queryKey: ["useDevsPaginationKey"] });
-    },
-    onError: () => {
-      toast({
-        title: "Erro ao cadastrar desenvolvedor",
-        variant: "destructive",
-      });
-    },
-  });
+  const { mutateAsync: createDevsFn, isPending: isPendingCreate } = useMutation(
+    {
+      mutationFn: useCreateDevs.fn,
+      onSuccess: () => {
+        form.reset();
+        setIsOpen(false);
+        toast({
+          title: "Desenvolvedor cadastrado com sucesso!",
+        });
+        queryClient.invalidateQueries({ queryKey: ["useDevsPaginationKey"] });
+      },
+      onError: () => {
+        toast({
+          title: "Erro ao cadastrar desenvolvedor",
+          variant: "destructive",
+        });
+      },
+    }
+  );
 
-  const { mutateAsync: updateDevsFn, isPending: isPendingUpdate } = useMutation({
-    mutationFn: useUpdateDevs.fn,
-    onSuccess: () => {
-      form.reset();
-      setIsOpen(false);
-      toast({
-        title: "Desenvolvedor atualizado com sucesso!",
-      });
-      queryClient.invalidateQueries({ queryKey: ["useDevsPaginationKey"] });
-    },
-    onError: () => {
-      toast({
-        title: "Erro ao atualizar desenvolvedor",
-        variant: "destructive",
-      });
-    },
-  });
+  const { mutateAsync: updateDevsFn, isPending: isPendingUpdate } = useMutation(
+    {
+      mutationFn: useUpdateDevs.fn,
+      onSuccess: () => {
+        form.reset();
+        setIsOpen(false);
+        toast({
+          title: "Desenvolvedor atualizado com sucesso!",
+        });
+        queryClient.invalidateQueries({ queryKey: ["useDevsPaginationKey"] });
+      },
+      onError: () => {
+        toast({
+          title: "Erro ao atualizar desenvolvedor",
+          variant: "destructive",
+        });
+      },
+    }
+  );
 
   const isPending = isPendingCreate || isPendingUpdate;
 
@@ -217,7 +222,7 @@ export function ModalDevs({ developer, isEditMode }: ModalDevsProps) {
                         <Button
                           variant={"outline"}
                           className={clsx(
-                            "w-[240px] pl-3 text-left font-normal",
+                            "w-full pl-3 text-left font-normal",
                             !field.value && "text-muted-foreground"
                           )}
                         >
@@ -233,15 +238,16 @@ export function ModalDevs({ developer, isEditMode }: ModalDevsProps) {
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={(date) =>
-                          date > new Date() || date < new Date("1900-01-01")
-                        }
-                        initialFocus
-                      />
+                      <PopoverClose>
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={(date) =>
+                            date > new Date() || date < new Date("1900-01-01")
+                          }
+                        />
+                      </PopoverClose>
                     </PopoverContent>
                   </Popover>
                   <FormDescription>

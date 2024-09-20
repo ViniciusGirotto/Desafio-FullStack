@@ -42,11 +42,12 @@ const Select: React.FC<SelectImcProps> = ({
     selectText,
     error
 }) => {
+    const [isOpen, setIsOpen] = React.useState(false);
 
     return (
         <FormItem className="flex flex-col">
             <FormLabel className={`${error ? 'text-[#7f291d] text-sm ' : "text-white text-base "}`}>{label}</FormLabel>
-            <Popover>
+            <Popover open={isOpen} onOpenChange={setIsOpen}>
                 <PopoverTrigger asChild>
                     <FormControl>
                         <Button
@@ -56,6 +57,7 @@ const Select: React.FC<SelectImcProps> = ({
                                 "w-full justify-between",
                                 !field.value && "text-muted-foreground"
                             )}
+                            onClick={() => setIsOpen(!isOpen)}
                         >
                             {field.value
                                 ? data.find((item) => item.value == field.value)?.label
@@ -64,7 +66,7 @@ const Select: React.FC<SelectImcProps> = ({
                         </Button>
                     </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="max-w-[400px] min-w-[220px] p-0">
+                <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
                     <Command>
                         <CommandList>
                             <CommandGroup>
@@ -75,6 +77,7 @@ const Select: React.FC<SelectImcProps> = ({
                                         key={item.value}
                                         onSelect={() => {
                                             form.setValue(field.name, item.value);
+                                            setIsOpen(false);
                                         }}
                                     >
                                         <Check
