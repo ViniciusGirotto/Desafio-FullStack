@@ -101,6 +101,15 @@
                             "type": "integer",
                             "default": 10
                         }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Termo de busca",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -117,24 +126,19 @@
                                                     "id": {
                                                         "type": "integer"
                                                     },
-                                                    "nivel": {
-                                                        "type": "string"
-                                                    },
                                                     "nome": {
                                                         "type": "string"
                                                     },
-                                                    "sexo": {
-                                                        "type": "string"
-                                                    },
-                                                    "data_nascimento": {
-                                                        "type": "string",
-                                                        "format": "date"
-                                                    },
-                                                    "idade": {
-                                                        "type": "integer"
-                                                    },
-                                                    "hobby": {
-                                                        "type": "string"
+                                                    "nivel": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "nivel": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
                                                     }
                                                 },
                                                 "type": "object"
@@ -360,6 +364,15 @@
                         "schema": {
                             "type": "integer",
                             "default": 10
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Termo de busca",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 ],
