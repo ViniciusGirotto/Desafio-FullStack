@@ -17,13 +17,14 @@ export const useNiveisPagination = (page: number, search: string) => {
     });
   }
 
-export const useNiveisGetAll = () => {
+export const useNiveisGetAll = (enabled: boolean) => {
     return useQuery({
         queryKey: ["useNiveisGetAllKey"],
         queryFn: async () => {
             const response = await Axios.get("/api/niveis");
             return response.data;
         },
+        enabled
     });
 }
 

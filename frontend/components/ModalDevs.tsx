@@ -61,7 +61,7 @@ type FormDataType = z.infer<typeof devCreateSchema>;
 
 export function ModalDevs({ developer, isEditMode }: ModalDevsProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const { data: niveis } = useNiveisGetAll();
+  const { data: niveis } = useNiveisGetAll(isOpen);
   const form = useForm<FormDataType>({
     resolver: zodResolver(devCreateSchema),
     defaultValues: {
