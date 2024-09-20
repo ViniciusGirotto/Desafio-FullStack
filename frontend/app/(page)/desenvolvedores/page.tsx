@@ -5,7 +5,7 @@ import HeaderPage from "@/components/HeaderPage";
 import Loader from "@/components/Loader";
 import { PaginationComponent } from "@/components/Pagination";
 import { useDevsPagination } from "@/services/desenvolvedores.service";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { columns } from "./columns";
 
 export default function Desenvolvedores() {
@@ -20,6 +20,12 @@ export default function Desenvolvedores() {
   const handleSearch = (search: string) => {
     setSearch(search);
   };
+
+  useEffect(() => {
+    if (devs && page > devs.meta.last_page) {
+      setPage(devs.meta.last_page);
+    }
+  }, [devs, page]);
 
   return (
     <>

@@ -3,7 +3,7 @@
 import { DeleteModal } from "@/components/DeleteModal";
 import { ModalDevs } from "@/components/ModalDevs";
 import { ColumnDef } from "@tanstack/react-table";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 export type Niveis = {
@@ -52,9 +52,9 @@ export const columns: ColumnDef<Devs>[] = [
     header: "Data de Nascimento",
     enableSorting: true,
     cell: ({ row }) => {
-      const dataNascimento = row.getValue<Date>("data_nascimento");
+      const dataNascimento = row.getValue<string>("data_nascimento");
       if (dataNascimento) {
-        const formattedDate = format(new Date(dataNascimento), "dd/MM/yyyy", {
+        const formattedDate = format(parseISO(dataNascimento), "dd/MM/yyyy", {
           locale: ptBR,
         });
         return <div>{formattedDate}</div>;
@@ -83,7 +83,7 @@ export const columns: ColumnDef<Devs>[] = [
       return (
         <div className="flex flex-row justify-end items-center gap-x-2">
           <ModalDevs developer={devs} isEditMode={true} />
-          <DeleteModal itemName="dev" id={devs.id}/>
+          <DeleteModal itemName="dev" id={devs.id} />
         </div>
       );
     },

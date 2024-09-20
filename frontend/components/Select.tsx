@@ -60,7 +60,7 @@ const Select: React.FC<SelectImcProps> = ({
                             onClick={() => setIsOpen(!isOpen)}
                         >
                             {field.value
-                                ? data.find((item) => item.value == field.value)?.label
+                                ? data?.find((item) => item.value == field.value)?.label
                                 : selectText}
                             <ChevronsUpDown className="ml-1 h-4 w-4 shrink-0 opacity-50" />
                         </Button>

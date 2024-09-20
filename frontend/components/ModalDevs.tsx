@@ -27,7 +27,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { Calendar } from "./ui/calendar";
 import clsx from "clsx";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { Select } from "./Select";
 import { generos } from "@/lib/utils";
 import {
@@ -39,7 +39,7 @@ import { toast } from "@/hooks/use-toast";
 import { useNiveisGetAll } from "@/services/niveis.service";
 import { Devs, Niveis } from "@/app/(page)/desenvolvedores/columns";
 import { useState, useEffect } from "react";
-import { EditIcon } from "lucide-react";
+import { EditIcon, XIcon } from "lucide-react";
 import { queryClient } from "@/utils/ReactQueryProvider";
 import { ptBR } from "date-fns/locale";
 import Loader from "./Loader";
@@ -79,7 +79,7 @@ export function ModalDevs({ developer, isEditMode }: ModalDevsProps) {
     if (isEditMode && developer) {
       form.setValue("nome", developer.nome);
       form.setValue("genero", developer.sexo);
-      form.setValue("dob", new Date(developer.data_nascimento));
+      form.setValue("dob", parseISO(developer.data_nascimento.toString()));
       form.setValue("hobby", developer.hobby);
       form.setValue("nivel", developer.nivel.id.toString());
     }
@@ -238,7 +238,15 @@ export function ModalDevs({ developer, isEditMode }: ModalDevsProps) {
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
-                      <PopoverClose>
+                        <div className="flex m-1">
+                          <div className="flex-1"></div>
+                          <PopoverClose>
+                            <XIcon
+                              size={24}
+                              className="text-white hover:text-destructive"
+                            />
+                          </PopoverClose>
+                        </div>
                         <Calendar
                           mode="single"
                           selected={field.value}
@@ -247,7 +255,6 @@ export function ModalDevs({ developer, isEditMode }: ModalDevsProps) {
                             date > new Date() || date < new Date("1900-01-01")
                           }
                         />
-                      </PopoverClose>
                     </PopoverContent>
                   </Popover>
                   <FormDescription>
